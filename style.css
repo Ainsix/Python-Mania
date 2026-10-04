@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 16px;
+  color: #4ade80;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.scoreboard b {
+  color: #4ade80;
+}
+
+canvas {
+  background: #0f0f1e;
+  border: 3px solid black;
+  border-radius: 8px;
+}
+
+.controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 20px;
+  background: #4ade80;
+  color: #0f0f1e;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+button:hover { transform: scale(1.05); }
+button:active { transform: scale(0.95); }
+
+.hint {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #888;
+}
+/* === TABLET === */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .canvas-wrapper {
+    width: min(70vw, 450px);
+  }
+}
+
+/* === MOBILE KECIL === */
+@media (max-width: 500px) {
+  .container { gap: 10px; }
+  .canvas-wrapper { width: 92vw; }
+}
+
+/* === MOBILE LANDSCAPE === */
+@media (max-height: 500px) and (orientation: landscape) {
+  .container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    max-width: 900px;
+  }
+  .canvas-wrapper { width: min(50vw, 320px); }
+  h1 { display: none; }
+  .hint { width: 100%; }
+}

@@ -1,6 +1,5 @@
-// ============================
-// 1. AMBIL ELEMEN DOM
-// ============================
+// catatan: storage.js harus dimuat duluan di html, soalnya fungsi getPlayerName, saveAttempt, dll dipake di sini
+// ambil element dom abistu kasi variabel
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const scoreEl = document.getElementById('score');
@@ -8,16 +7,14 @@ const highScoreEl = document.getElementById('highScore');
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 
-// ============================
-// 2. KONFIGURASI GRID
-// ============================
+// ini grid box mapnya 
 const GRID = 20;                      // ukuran 1 sel (px)
-const COLS = canvas.width / GRID;     // 20 kolom
-const ROWS = canvas.height / GRID;    // 20 baris
+const COLS = canvas.width / GRID;    
+const ROWS = canvas.height / GRID;    
+//jadi nanti tinggi dan lebar dari canvas akan dibagi dengan grid biar bisa pas(harus habis dibagi btw)
 
-// ============================
-// 3. STATE GAME
-// ============================
+// 
+
 let snake, direction, nextDirection, food, score, highScore;
 let gameLoop = null;
 let isRunning = false;
@@ -26,9 +23,9 @@ let isRunning = false;
 highScore = Number(localStorage.getItem('snakeHighScore')) || 0;
 highScoreEl.textContent = highScore;
 
-// ============================
-// 4. INISIALISASI GAME
-// ============================
+
+//inisialisasi gamenya(start)
+
 function init() {
   snake = [
     { x: 10, y: 10 },  // kepala
@@ -43,21 +40,19 @@ function init() {
   draw();
 }
 
-// ============================
-// 5. SPAWN MAKANAN
-// ============================
+//spawn foodnya
+
 function spawnFood() {
   do {
     food = {
       x: Math.floor(Math.random() * COLS),
       y: Math.floor(Math.random() * ROWS)
     };
-  } while (snake.some(seg => seg.x === food.x && seg.y === food.y));
+  } while (snake.some(p => p.x === food.x && p.y === food.y));
 }
 
-// ============================
-// 6. UPDATE (GAME LOOP)
-// ============================
+
+//update gameloop
 function update() {
   direction = nextDirection;
 
@@ -66,12 +61,12 @@ function update() {
     y: snake[0].y + direction.y
   };
 
-  // Tabrak dinding?
+  // kalo tabrak dinding
   if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
     return gameOver();
   }
 
-  // Tabrak badan sendiri?
+  // kalo tabrak diri sendiri
   if (snake.some(seg => seg.x === head.x && seg.y === head.y)) {
     return gameOver();
   }
@@ -90,9 +85,8 @@ function update() {
   draw();
 }
 
-// ============================
-// 7. GAMBAR (RENDER)
-// ============================
+
+// gambar(rendernya)
 function draw() {
   // Background
   ctx.fillStyle = '#0f0f1e';
@@ -100,14 +94,18 @@ function draw() {
 
   // Grid halus
   ctx.strokeStyle = 'rgba(74, 222, 128, 0.05)';
+  // garis tegak (sebanyak kolom)
   for (let i = 0; i <= COLS; i++) {
     ctx.beginPath();
     ctx.moveTo(i * GRID, 0);
     ctx.lineTo(i * GRID, canvas.height);
     ctx.stroke();
+  }
+  // garis datar (sebanyak baris, bukan kolom)
+  for (let j = 0; j <= ROWS; j++) {
     ctx.beginPath();
-    ctx.moveTo(0, i * GRID);
-    ctx.lineTo(canvas.width, i * GRID);
+    ctx.moveTo(0, j * GRID);
+    ctx.lineTo(canvas.width, j * GRID);
     ctx.stroke();
   }
 
@@ -135,9 +133,8 @@ function draw() {
   });
 }
 
-// ============================
-// 8. GAME OVER
-// ============================
+// game over
+
 function gameOver() {
   clearInterval(gameLoop);
   isRunning = false;
@@ -148,6 +145,14 @@ function gameOver() {
     localStorage.setItem('snakeHighScore', highScore);
     highScoreEl.textContent = highScore;
   }
+
+  // simpan percobaan ini ke leaderboard (fungsinya ada di storage.js)
+  saveAttempt({
+    name: getPlayerName(),
+    score: score,
+    length: snake.length,
+    date: new Date().toISOString()
+  });
 
   // Overlay
   ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
@@ -163,9 +168,8 @@ function gameOver() {
   ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 30);
 }
 
-// ============================
-// 9. FUNGSI UBAH ARAH (TERPUSAT)
-// ============================
+
+//ubah arah
 function setDirection(newDir) {
   if (newDir === 'up'    && direction.y === 0) nextDirection = { x: 0,  y: -1 };
   if (newDir === 'down'  && direction.y === 0) nextDirection = { x: 0,  y: 1  };
@@ -173,9 +177,7 @@ function setDirection(newDir) {
   if (newDir === 'right' && direction.x === 0) nextDirection = { x: 1,  y: 0  };
 }
 
-// ============================
-// 10. KONTROL KEYBOARD (ARROW ONLY)
-// ============================
+// control keyboard
 document.addEventListener('keydown', (e) => {
   const key = e.key.toLowerCase();
 
@@ -190,9 +192,9 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// ============================
-// 11. KONTROL SWIPE (MOBILE)
-// ============================
+
+// swipe untuk control mobile
+
 let touchStartX = 0;
 let touchStartY = 0;
 let swipeTriggered = false;
@@ -231,20 +233,22 @@ canvas.addEventListener('touchend', () => {
   swipeTriggered = false;
 });
 
-// ============================
-// 12. TOMBOL MULAI
-// ============================
+// input nama pemain, isi awalnya diambil dari storage.js
+const nameInput = document.getElementById('playerName');
+nameInput.value = getPlayerName();
+
+// start
 startBtn.addEventListener('click', () => {
   if (isRunning) return;
+  setPlayerName(nameInput.value); // simpan nama sebelum main
   init();
   isRunning = true;
   clearInterval(gameLoop);
   gameLoop = setInterval(update, 120);
 });
 
-// ============================
-// 13. TOMBOL PAUSE
-// ============================
+
+// pause
 pauseBtn.addEventListener('click', () => {
   if (!isRunning) return;
 
@@ -258,7 +262,5 @@ pauseBtn.addEventListener('click', () => {
   }
 });
 
-// ============================
-// 14. RENDER AWAL
-// ============================
+//render awalnya
 init();

@@ -2,23 +2,35 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Snake Game</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>berbicara_hanya_dalam_python.py</h1>
+    <h1>Python MANAI</h1>
+    <!--scoreboard-->
+    <div class="name-row">
+      <input id="playerName" type="text" maxlength="12" placeholder="Nama pemain">
+    </div>
     <div class="scoreboard">
       <span>Score: <b id="score">0</b></span>
       <span>High: <b id="highScore">0</b></span>
     </div>
-    <canvas id="game" width="800" height="500"></canvas>
+    <!--area gambar nya(anggap aja kek lukisan)-->
+    <div class="canvas-wrapper">
+      <canvas id="game" width="800" height="500"></canvas>
+    </div>
+     <!--Tombolnya-->
     <div class="controls">
       <button id="startBtn">Mulai</button>
       <button id="pauseBtn">Pause</button>
+      <a class="btn secondary" href="leaderboard.html">Leaderboard</a>
+      <a class="btn secondary" href="menu.html">Menu</a>
     </div>
-    <p class="hint">Control pake arrow saja</p>
+    <p class="hint">Kontrol: tombol panah (desktop) atau swipe (mobile)</p>
   </div>
+  <script src="storage.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

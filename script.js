@@ -263,4 +263,4 @@ pauseBtn.addEventListener('click', () => {
 });
 
 //render awalnya
-init();
+init(); 

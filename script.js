@@ -22,9 +22,7 @@ let isRunning = false;
 highScore = Number(localStorage.getItem('snakeHighScore')) || 0;
 highScoreEl.textContent = highScore;
 
-
 //inisialisasi gamenya(start)
-
 function init() {
   snake = [
     { x: 10, y: 10 },  // kepala
@@ -49,7 +47,6 @@ function spawnFood() {
     };
   } while (snake.some(p => p.x === food.x && p.y === food.y));
 }
-
 
 //update gameloop
 function update() {
@@ -83,7 +80,6 @@ function update() {
 
   draw();
 }
-
 
 // gambar(rendernya)
 function draw() {
@@ -191,9 +187,7 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-
 // swipe untuk control mobile
-
 let touchStartX = 0;
 let touchStartY = 0;
 let swipeTriggered = false;

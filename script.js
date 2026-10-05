@@ -12,7 +12,6 @@ const GRID = 20;                      // ukuran 1 sel (px)
 const COLS = canvas.width / GRID;    
 const ROWS = canvas.height / GRID;    
 //jadi nanti tinggi dan lebar dari canvas akan dibagi dengan grid biar bisa pas(harus habis dibagi btw)
-
 // 
 
 let snake, direction, nextDirection, food, score, highScore;
@@ -30,10 +29,10 @@ function init() {
   snake = [
     { x: 10, y: 10 },  // kepala
     { x: 9,  y: 10 },
-    { x: 8,  y: 10 }   // ekor
+    { x: 8,  y: 10 }   // buntut
   ];
-  direction     = { x: 1, y: 0 };  // ke kanan
-  nextDirection = { x: 1, y: 0 };
+  direction     = { x: 1, y: 0 };  //mulai ke kanan
+  nextDirection = { x: 1, y: 0 }; 
   score = 0;
   scoreEl.textContent = score;
   spawnFood();
